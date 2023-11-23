@@ -5,6 +5,7 @@ import { Password } from 'primereact/password';
 import { Checkbox } from "primereact/checkbox";
 import { Button } from "primereact/button";
 import { Tooltip } from 'primereact/tooltip';
+import { motion } from "framer-motion";
 
 import { useForm } from "../../hooks/useForm";
 import { useState } from "react";
@@ -19,10 +20,14 @@ export const LoginPage = () => {
 
     return (
         <>
-            <div className='flex gap-5 p-4 items-center justify-center'>
+            <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className='flex gap-5 p-4 items-center justify-center'>
                 <div className='w-full max-w-md'>
-                    <div className="text-center m-4">
-                        <a href="/" className="text-3xl text-blue-800 font-bold">EduSmart</a>
+                    <div className="text-center mb-3 mt-1">
+                        <a href="/" className="text-4xl text-blue-900 font-bold">EduSmart</a>
                     </div>
                     <Card className='px-8 pt-6 pb-4 mb-4 border-slate-950 shadow-lg'>
                         <h2 className="text-xl text-center font-bold mb-5">CONTROL DE ACCESO</h2>
@@ -92,7 +97,7 @@ export const LoginPage = () => {
                 <div className="hidden lg:block lg:col-span-1 w-2/5">
                     <img src="../../../public/undraw_secure_login_pdn4.svg" alt="" />
                 </div>
-            </div >
+            </motion.div >
         </>
     )
 }
