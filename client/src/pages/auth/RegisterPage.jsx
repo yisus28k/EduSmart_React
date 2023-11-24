@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import Axios from "axios";
+import React, { useState, useRef } from 'react'
 import { Card } from "primereact/card";
 import { Divider } from "primereact/divider";
 import { InputText } from "primereact/inputtext";
@@ -6,19 +7,24 @@ import { Password } from "primereact/password";
 import { Button } from "primereact/button";
 import { useForm } from "../../hooks/useForm";
 import { motion } from "framer-motion"
+import { Toast } from 'primereact/toast';
+import { Navigate } from "react-router-dom";
 
 export const RegisterPage = () => {
+
     const MAX_LENGTH = 15; // Longitud máxima permitida para los campos
     const MIN_LENGTH = 8; // Longitud mínima permitida para los campos
+    const toast = useRef(null);
 
     const [value, setValue] = useState(''); // Estado para el campo de contraseña
+
     const header = <div className="font-bold mb-3"> Teclee su contraseña </div>; // Título para el campo de contraseña
 
-    const { nombre, app, apm, email, password, onInputChange, onResetForm } = useForm({
+    const { nombre, app, apm, correo, password, onInputChange, onResetForm } = useForm({
         nombre: '',
         app: '',
         apm: '',
-        email: '',
+        correo: '',
         password: '',
     });
 
@@ -38,14 +44,38 @@ export const RegisterPage = () => {
 
     const onRegister = (e) => {
         e.preventDefault();
-        console.log('Formulario enviado');
-        console.log(nombre, app, apm, email, password);
-        onResetForm();
+        // Si la contraseña no cumple con los requisitos, se muestra un mensaje de error con un toast
+        if (password.length < MIN_LENGTH) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'La contraseña no cumple con los requisitos', life: 2000, closable: true, className: 'text-black' });
+            return;
+        } else {
+            //si la contraseña cumple con los requisitos se manda la información al backend
+            Axios.post('http://localhost:3000/register', {
+                nombre: nombre,
+                app: app,
+                apm: apm,
+                correo: correo,
+                password: password
+            }).then((response) => {
+                console.log(response);
+                if (response.data.success) {
+                    toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Usuario registrado correctamente', life: 1000, closable: true, className: 'text-black' });
+                    onResetForm();
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1000);
+                } else {
+                    toast.current.show({ severity: 'error', summary: 'Error', detail: response.data.message, life: 2000, closable: true, className: 'text-black' });
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
     }
-
 
     return (
         <>
+            <Toast ref={toast} />
             <motion.div
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -102,8 +132,8 @@ export const RegisterPage = () => {
                                 <label className="block text-gray-700 text-sm font-bold mb-2">Correo electrónico</label>
                                 <InputText
                                     className='w-full'
-                                    name='email'
-                                    value={email}
+                                    name='correo'
+                                    value={correo}
                                     onChange={onInputChange}
                                     placeholder='Ingrese su correo electrónico'
                                     required
@@ -124,7 +154,7 @@ export const RegisterPage = () => {
                                     toggleMask
                                     header={header}
                                     footer={footer}
-                                    minLength={MIN_LENGTH}
+                                    // minLength={MIN_LENGTH}
                                     maxLength={MAX_LENGTH}
                                 />
                             </div>
