@@ -8,9 +8,11 @@ import { Button } from "primereact/button";
 import { useForm } from "../../hooks/useForm";
 import { motion } from "framer-motion"
 import { Toast } from 'primereact/toast';
-import { Navigate } from "react-router-dom";
+import { Checkbox } from "primereact/checkbox";
+import { Tooltip } from 'primereact/tooltip';
 
 export const RegisterPage = () => {
+    const [checked, setChecked] = useState(false);
 
     const MAX_LENGTH = 15; // Longitud máxima permitida para los campos
     const MIN_LENGTH = 8; // Longitud mínima permitida para los campos
@@ -80,13 +82,13 @@ export const RegisterPage = () => {
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
-                className='flex pt-3 pb-3 items-center justify-center' >
+                className='flex items-center justify-center' >
                 <div className="w-full max-w-md">
-                    <div className="text-center mb-3 mt-1">
+                    <div className="text-center mb-2 mt-2">
                         <a href="/" className="text-4xl text-blue-900 font-bold">EduSmart</a>
                     </div>
                     <Card className="px-5 mb-2">
-                        <h2 className="text-xl text-center font-bold mb-2">Crear cuenta</h2>
+                        <h2 className="text-xl text-center font-bold mb-1">Crear cuenta</h2>
                         <Divider className="mb-2" />
                         <form onSubmit={onRegister} autoComplete='off'>
                             <div className="mb-2">
@@ -158,19 +160,33 @@ export const RegisterPage = () => {
                                     maxLength={MAX_LENGTH}
                                 />
                             </div>
-                            {/* boton */}
-                            <div data-pr-tooltip="Debes aceptar los términos y condiciones">
+                            <div className="mb-6">
+                                <Checkbox
+                                    id="terms"
+                                    name="terms"
+                                    onChange={(e) => setChecked(e.checked)}
+                                    checked={checked}
+                                />
+                                <label
+                                    className="ml-2 text-gray-700 text-sm font-semibold"
+                                    onClick={() => setChecked(!checked)}>
+                                    Aceptar términos y condiciones
+                                </label>
+                            </div>
+                            <div className=" mb-1" data-pr-tooltip="Debes aceptar los términos y condiciones">
+                                <Tooltip target=".mb-1" disabled={checked} />
                                 <Button
                                     label="Crear cuenta"
                                     className="w-full"
                                     type="submit"
+                                    disabled={!checked}
                                 />
                             </div>
                         </form>
+                        <div className="text-center text-lg text-dark mt-3 pb-0">
+                            ¿Ya tienes una cuenta? <a href="/" className="text-blue-500 hover:underline">Inicia sesión aquí</a>
+                        </div>
                     </Card>
-                    <div className="text-center text-lg text-dark mt-3">
-                        ¿Ya tienes una cuenta? <a href="/" className="text-blue-500 hover:underline">Inicia sesión aquí</a>
-                    </div>
                 </div>
             </motion.div>
         </>
