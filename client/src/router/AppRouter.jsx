@@ -1,7 +1,8 @@
-import React from 'react'
-import { Route, Routes } from 'react-router-dom'
+// AppRouter.js
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
 import { LoginPage, RegisterPage, RecoverPasswordPage } from "../pages/auth";
-import { HomePage } from "../pages";
+import { HomePage, a } from "../pages";
 import { ProtectedRoute } from "./ProtectedRoute";
 
 export const AppRouter = () => {
@@ -11,14 +12,11 @@ export const AppRouter = () => {
                 <Route index element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/recover-password" element={<RecoverPasswordPage />} />
-                <Route path='/'>
-                    <Route path='/home' element={
-                        <ProtectedRoute>
-                            <HomePage />
-                        </ProtectedRoute>}>
-                    </Route>
-                </Route>
+                <Route
+                    path="/home"
+                    element={<ProtectedRoute component={HomePage} />}
+                />
             </Routes>
         </>
-    )
-}
+    );
+};

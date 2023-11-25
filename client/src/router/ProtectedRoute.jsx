@@ -1,8 +1,9 @@
+// ProtectedRoute.js
 import React, { useState } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 
-export const ProtectedRoute = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+export const ProtectedRoute = ({ component: Component }) => {
+    const [isAuthenticated, setIsAuthenticated] = useState(true);
 
-    return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
-}
+    return isAuthenticated ? <Component /> : <Navigate to="/" />;
+};
