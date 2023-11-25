@@ -2,7 +2,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { LoginPage, RegisterPage, RecoverPasswordPage } from "../pages/auth";
-import { HomePage, a } from "../pages";
+import { HomePage } from "../pages";
 import { ProtectedRoute } from "./ProtectedRoute";
 
 export const AppRouter = () => {
