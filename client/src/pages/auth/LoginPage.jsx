@@ -1,55 +1,83 @@
+import React, { useRef, useState } from "react";
 import { Card } from "primereact/card";
 import { Divider } from "primereact/divider";
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Checkbox } from "primereact/checkbox";
 import { Button } from "primereact/button";
-import { motion } from "framer-motion";
 import { Toast } from 'primereact/toast';
 import { Tooltip } from "primereact/tooltip";
 import { useForm } from "../../hooks/useForm";
-import { useState, useRef } from "react";
 import Axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useAuth } from "../../context/AuthProvider";
 
 export const LoginPage = () => {
-    //Numero de intentos de logeo permitidos
     const [loginAttempts, setLoginAttempts] = useState(0);
-
     const MAX_LENGTH = 15; // Longitud máxima permitida para los campos
     const MIN_LENGTH = 8; // Longitud mínima permitida para los campos
     const MAX_ATTEMPTS = 5; // Número máximo de intentos de logeo permitidos
-
     const toast = useRef(null);
-
-    const { email, password, onInputChange, onResetForm } = useForm({
+    const { isAuthenticated, setAuthData } = useAuth();
+    const { email, password, onInputChange } = useForm({
         email: '',
         password: '',
     });
 
+    const navigate = useNavigate();
+
+
     const [checked, setChecked] = useState(false);
 
-    const onLogin = (e) => {
-        e.preventDefault(); //Se previene el comportamiento por defecto del formulario
-        Axios.post('http://localhost:3000/login', {
-            email: email,
-            password: password
-        }).then((response) => {
-            console.log(response);
+    const onLogin = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await Axios.post("http://localhost:3000/login", {
+                email: email,
+                password: password,
+            });
+
             if (response.data.success) {
-                window.location.href = '/home';
+                setAuthData({
+                    isAuthenticated: true,
+                    token: response.data.token,
+                });
+
+                navigate("/home");
             } else {
-                setLoginAttempts(loginAttempts + 1); //Se incrementa el número de intentos de logeo
+                setLoginAttempts(loginAttempts + 1);
+
                 if (loginAttempts >= MAX_ATTEMPTS) {
-                    toast.current.show({ severity: 'error', summary: 'Error', detail: 'Número de intentos de excedido', life: 2000, closable: true, className: 'text-black' });
-                    return;
+                    toast.current.show({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Número de intentos excedido, por favor vuelve más tarde',
+                        life: 2000,
+                        closable: true,
+                        className: 'text-black',
+                    });
+                } else {
+                    toast.current.show({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Usuario o contraseña incorrectos',
+                        life: 2000,
+                        closable: true,
+                        className: 'text-black',
+                    });
                 }
-                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Usuario o contraseña incorrectos', life: 2000, closable: true, className: 'text-black' });
             }
-        })
+        } catch (error) {
+            console.error("Error en la solicitud de inicio de sesión:", error);
+        }
     };
 
-
-
+    if (isAuthenticated) {
+        return <Navigate to="/home" />;
+    }
+    
     return (
         <>
             <motion.div
@@ -131,9 +159,14 @@ export const LoginPage = () => {
                     </div>
                 </div>
                 <div className="hidden lg:block lg:col-span-1 w-2/5">
-                    <img src="../../../public/undraw_secure_login_pdn4.svg" alt="" />
+                    {/* Reemplaza la ruta con la ruta correcta a tu imagen */}
+                    <img src="/undraw_secure_login_pdn4.svg" alt="" />
                 </div>
-            </motion.div >
+            </motion.div>
         </>
-    )
-}
+    );
+    
+    
+};
+
+
