@@ -130,9 +130,9 @@ export const LoginPage = () => {
                         ¿No tienes una cuenta? <a href="./register" className="text-blue-500 hover:underline"> Regístrate aquí</a>
                     </div>
                 </div>
-                <div className="hidden lg:block lg:col-span-1 w-2/5">
+                {/* <div className="hidden lg:block lg:col-span-1 w-2/5">
                     <img src="../../../public/undraw_secure_login_pdn4.svg" alt="" />
-                </div>
+                </div> */}
             </motion.div >
         </>
     )
