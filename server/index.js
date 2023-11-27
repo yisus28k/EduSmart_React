@@ -11,6 +11,11 @@ app.use(express.json());
 app.use("/register", Register);
 app.use("/login", Login);
 
+// Ruta para cerrar sesión
+app.post("/logout", (req, res) => {
+    res.status(200).json({ success: true, message: "Sesión cerrada exitosamente" });
+});
+
 
 app.listen(PORT, () => {
     console.log('Connnected to the server in', PORT);
