@@ -15,9 +15,9 @@ import { useAuth } from "../../context/AuthProvider";
 
 export const LoginPage = () => {
     const [loginAttempts, setLoginAttempts] = useState(0);
-    const MAX_LENGTH = 15; // Longitud máxima permitida para los campos
-    const MIN_LENGTH = 8; // Longitud mínima permitida para los campos
-    const MAX_ATTEMPTS = 5; // Número máximo de intentos de logeo permitidos
+    const MAX_LENGTH = 15;
+    const MIN_LENGTH = 8;
+    const MAX_ATTEMPTS = 5;
     const toast = useRef(null);
     const { isAuthenticated, setAuthData } = useAuth();
     const { email, password, onInputChange } = useForm({
@@ -26,8 +26,6 @@ export const LoginPage = () => {
     });
 
     const navigate = useNavigate();
-
-
     const [checked, setChecked] = useState(false);
 
     const onLogin = async (e) => {
@@ -77,7 +75,7 @@ export const LoginPage = () => {
     if (isAuthenticated) {
         return <Navigate to="/home" />;
     }
-    
+
     return (
         <>
             <motion.div
@@ -158,11 +156,7 @@ export const LoginPage = () => {
                         ¿No tienes una cuenta? <a href="./register" className="text-blue-500 hover:underline"> Regístrate aquí</a>
                     </div>
                 </div>
-
+            </motion.div>
         </>
     );
-    
-    
 };
-
-
