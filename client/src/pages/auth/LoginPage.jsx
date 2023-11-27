@@ -158,11 +158,7 @@ export const LoginPage = () => {
                         ¿No tienes una cuenta? <a href="./register" className="text-blue-500 hover:underline"> Regístrate aquí</a>
                     </div>
                 </div>
-                <div className="hidden lg:block lg:col-span-1 w-2/5">
-                    {/* Reemplaza la ruta con la ruta correcta a tu imagen */}
-                    <img src="/undraw_secure_login_pdn4.svg" alt="" />
-                </div>
-            </motion.div>
+
         </>
     );
     

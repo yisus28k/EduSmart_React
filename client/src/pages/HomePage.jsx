@@ -2,6 +2,7 @@ import React from 'react';
 import { useAuth } from '../context/AuthProvider';
 import Axios from 'axios';
 
+
 export const HomePage = () => {
     const { isAuthenticated, setAuthData } = useAuth();
 
@@ -24,6 +25,7 @@ export const HomePage = () => {
     };
 
     return (
+
         <div>
             {isAuthenticated ? (
                 <div>
@@ -36,3 +38,4 @@ export const HomePage = () => {
         </div>
     );
 };
+

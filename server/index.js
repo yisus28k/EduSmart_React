@@ -13,10 +13,6 @@ app.use("/login", Login);
 
 // Ruta para cerrar sesión
 app.post("/logout", (req, res) => {
-    // Aquí deberías realizar acciones para cerrar la sesión del usuario
-    // por ejemplo, eliminar cualquier token o información de sesión en el servidor.
-
-    // Devuelve una respuesta indicando éxito o error
     res.status(200).json({ success: true, message: "Sesión cerrada exitosamente" });
 });
 
