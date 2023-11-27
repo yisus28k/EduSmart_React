@@ -33,7 +33,7 @@ Login.post("/", (req, res) => {
                     // Crea y firma el token JWT
                     const token = jwt.sign({ userId: user.id, email: user.correo_electronico }, secretKey, { expiresIn: "1h" });
 
-                    res.status(200).json({ success: true, message: "Inicio de sesión exitoso" });
+                    res.status(200).json({ success: true, token });
                 }
             });
         }
